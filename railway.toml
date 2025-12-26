@@ -1,0 +1,5 @@
+[build]
+builder = nixpacks
+
+[build.nixpacks]
+python_version = 3.10
