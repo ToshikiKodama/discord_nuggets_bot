@@ -17,7 +17,17 @@ intents = discord.Intents.default()
 intents.message_content = True  # jishaku用
 intents.members = True          # メンバー情報を扱う
 
-bot = commands.Bot(command_prefix="!", intents=intents)  # !jsk用にprefix残す
+class NuggetBot(commands.Bot):
+    async def setup_hook(self):
+        # ゲーム Cog を非同期でセットアップ
+        try:
+            import games
+            await games.setup(self)
+            print("games をセットアップしました。")
+        except Exception as e:
+            print(f"games のロードに失敗しました: {e}")
+
+bot = NuggetBot(command_prefix="!", intents=intents)  # !jsk用にprefix残す
 
 # ギルドID（開発時は自分のサーバーIDを入れると同期が速い）
 GUILD_ID = int(os.getenv("GUILD_ID", "0"))  # .envにGUILD_ID=サーバーID を入れると便利
